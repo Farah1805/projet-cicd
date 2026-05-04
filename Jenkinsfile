@@ -34,9 +34,11 @@ pipeline {
 
         stage('Deploy to Kubernetes') {
             steps {
-                withCredentials([file(credentialsId: 'kubeconfig-prod', variable: 'KUBECONFIG')]) {
+                withCredentials([file(credentialsId: 'kubeconfig-fixed', variable: 'KUBECONFIG')]) {
                     sh 'kubectl version --client'
                     sh "kubectl set image deployment/mon-appli monconteneur=${DOCKER_IMAGE}"
+                    sh 'kubectl config view'
+                    sh 'kubectl get nodes'
                 }
             }
         }
